@@ -16,7 +16,7 @@ setuptools.setup(
     license='MIT',
     long_description_content_type="text/markdown",
     url="https://github.com/abarbatei/bankreader",
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(exclude=['test']),
     install_requires=requirements,
     classifiers=[
         "Development Status :: 4 - Beta",
