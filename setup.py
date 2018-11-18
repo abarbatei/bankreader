@@ -12,14 +12,14 @@ with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setuptools.setup(
     name="bankreader",
-    version="0.2.1",
+    version="0.2.2",
     author="Alin BARBATEI",
     description="Romanian banks statement parser",
     long_description=long_description,
     license='MIT',
     long_description_content_type="text/markdown",
     url="https://github.com/abarbatei/bankreader",
-    download_url='https://github.com/abarbatei/bankreader/archive/0.2.1.tar.gz',
+    download_url='https://github.com/abarbatei/bankreader/archive/0.2.2.tar.gz',
     packages=setuptools.find_packages(exclude=['test']),
     install_requires=['pandas>=0.23.4'],
     classifiers=[
