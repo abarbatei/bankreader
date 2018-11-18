@@ -14,7 +14,7 @@ with open(os.path.join(here, 'requirements'), encoding='utf-8') as f:
 
 setuptools.setup(
     name="bankreader",
-    version="0.2.0",
+    version="0.2.1",
     author="Alin BARBATEI",
     description="Romanian banks statement parser",
     long_description=long_description,
