@@ -21,7 +21,7 @@ setuptools.setup(
     license='MIT',
     long_description_content_type="text/markdown",
     url="https://github.com/abarbatei/bankreader",
-    download_url='https://github.com/abarbatei/bankreader/archive/0.2.0.tar.gz',
+    download_url='https://github.com/abarbatei/bankreader/archive/0.2.1.tar.gz',
     packages=setuptools.find_packages(exclude=['test']),
     install_requires=requirements,
     classifiers=[
