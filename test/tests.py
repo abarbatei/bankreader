@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from .context import bankreader
 import unittest
 from mock import patch
