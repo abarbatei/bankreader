@@ -1,10 +1,15 @@
 import setuptools
+import os
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+here = os.path.abspath(os.path.dirname(__file__))
 
-with open("requirements", "r") as fh:
-    requirements = fh.read().splitlines()
+# Get the long description from the README file
+with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
+
+
+with open(os.path.join(here, 'requirements'), encoding='utf-8') as f:
+    requirements = f.read().splitlines()
 
 
 setuptools.setup(
