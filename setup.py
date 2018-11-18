@@ -10,10 +10,6 @@ with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 
-with open(os.path.join(here, 'requirements'), encoding='utf-8') as f:
-    requirements = f.read().splitlines()
-
-
 setuptools.setup(
     name="bankreader",
     version="0.2.1",
@@ -25,7 +21,7 @@ setuptools.setup(
     url="https://github.com/abarbatei/bankreader",
     download_url='https://github.com/abarbatei/bankreader/archive/0.2.1.tar.gz',
     packages=setuptools.find_packages(exclude=['test']),
-    install_requires=requirements,
+    install_requires=['pandas>=0.23.4'],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Programming Language :: Python :: 3",
