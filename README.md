@@ -28,3 +28,10 @@ for transaction in statement.transactions:
 ```
 
 Other examples can be seen in the tests.
+
+### Installation
+
+To install/use the module you can:
+- download, run `pip install -r requirements` and copy the `bankreader` folder to where you want to user it and simply use such as `from bankreader ...`
+- download the project and run `setup.py install`
+- install via pip: `pip install bankreader`
