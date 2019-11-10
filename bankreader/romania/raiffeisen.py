@@ -4,6 +4,7 @@
 import logging
 import ntpath
 import re
+import os
 from datetime import datetime
 
 import pandas
@@ -243,27 +244,54 @@ class RaiffeisenStatement:
     @staticmethod
     def _parse_statement_file_name(xls_path):
         """
-        Some (almost none) description can be found here (pages 16 and 17):
+        Possible file name formats:
         https://www.raiffeisen.ro/wps/wcm/connect/211686be-6c69-4023-897b-a9b8f3763498/Ghid-de-utilizare-Raiffeisen-Online-IMM.pdf?MOD=AJPERES&CVID=
+            (pages 16 and 17):
+            Older format: Extras_<account_number>_<statement_date>.xls
+        https://www.raiffeisen.ro/wps/wcm/connect/0b85191c-9cd4-4eae-be51-3a441782dd0c/201705-Ghid-Internet-Banking-Raiffeisen-Online.pdf?MOD=AJPERES&CVID=
+            (page 16)
+            Old format: Extras_de_cont_<account_number>_<chosen_start_date>_<chosen_end_date>.xls
+            eg. Extras_de_cont_12345678_01012018_20012018.xls
+        https://www.raiffeisen.ro/wps/wcm/connect/c7dec68a-0bb2-4b15-ac13-9de66ef3e2c3/Ghid-utilizare-Internet+Banking-Corporatii.pdf?MOD=AJPERES&CVID=
+            (page 20)
+            New format: Extras_<account_number>_<chosen_start_date>.xlsx
+            eg. Extras_de_cont_12345678_01102019.xlsx
 
-        Old format: Extras_<account_number>_<statement_date>.xls
-        New format: Extras_de_cont_<account_number>_<chosen_start_date>_<chosen_end_date>.xls
-        eg. Extras_de_cont_12345678_01012018_20012018.xls
+
         :return: dict with keys/values
             "account_number"
             "start_generation_time"
             "end_generation_time"
+            Will return None where data is not available
         """
-        xls_file_name = ntpath.basename(xls_path).strip(".xls")
+        xls_file_name, file_extension = os.path.splitext(ntpath.basename(xls_path))
 
-        if xls_file_name.startswith("Extras_") is False:
-            raise ValueError(".xls name is not a valid bank extras, must be Extras_<other>, got: {}"
+        if not xls_file_name.startswith("Extras_"):
+            raise ValueError(".xls(x) name is not a valid Raiffeisen bank extras, must be Extras_<other>, got: {}"
                              .format(xls_file_name))
 
-        parts = xls_file_name.split("_")
-        account_number, from_date, to_date = parts[-3:]
-        start_generation_time = datetime.strptime(from_date, RaiffeisenStatement.FILE_NAME_DATE_FORMAT)
-        end_generation_time = datetime.strptime(to_date, RaiffeisenStatement.FILE_NAME_DATE_FORMAT)
+        processed_xis_file_name = xls_file_name.replace("Extras_", "").replace("de_cont_", "")
+
+        to_date = None
+        parts = processed_xis_file_name.split("_")
+
+        if len(parts) == 3:
+            account_number, from_date, to_date = parts
+        elif len(parts) == 2:
+            account_number, from_date = parts
+        else:
+            account_number = None
+            from_date = None
+
+        if from_date:
+            start_generation_time = datetime.strptime(from_date, RaiffeisenStatement.FILE_NAME_DATE_FORMAT)
+        else:
+            start_generation_time = None
+
+        if to_date:
+            end_generation_time = datetime.strptime(to_date, RaiffeisenStatement.FILE_NAME_DATE_FORMAT)
+        else:
+            end_generation_time = None
 
         return {
             "account_number": account_number,
