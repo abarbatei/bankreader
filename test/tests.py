@@ -37,11 +37,7 @@ class RomaniaTesting(unittest.TestCase):
         self.assertDictEqual(output, expected)
 
     def test_file_name_parser_invalid_time(self):
-        file_name = "Extras_de_cont_ValueError.xls"
-        self.assertRaises(ValueError, RaiffeisenStatement._parse_statement_file_name, file_name)
-
-    def test_file_name_parser_invalid_underline_count(self):
-        file_name = "Extras_.xls"
+        file_name = "Nu_de_cont_ValueError.xls"
         self.assertRaises(ValueError, RaiffeisenStatement._parse_statement_file_name, file_name)
 
     def test_file_name_parser_invalid_name(self):
@@ -212,6 +208,28 @@ class RomaniaTesting(unittest.TestCase):
             self.assertEqual(trans.card_usage_date, None)
             self.assertEqual(trans.description, expected_raw_description)
             self.assertEqual(trans.extra_data, None)
+
+    def test_file_name_parser_valid_new(self):
+        file_name = "Extras_de_cont_12345678_01102019.xlsx"
+        output = RaiffeisenStatement._parse_statement_file_name(file_name)
+        expected = {
+            "account_number": "12345678",
+            "start_generation_time": self.to_date("01102019", RaiffeisenStatement.FILE_NAME_DATE_FORMAT),
+            "end_generation_time": None
+        }
+
+        self.assertDictEqual(output, expected)
+
+    def test_invalid_file_name_parser_valid_new(self):
+        file_name = "Extras_de_cont_12345678.xlsx"
+        output = RaiffeisenStatement._parse_statement_file_name(file_name)
+        expected = {
+            "account_number": None,
+            "start_generation_time": None,
+            "end_generation_time": None
+        }
+
+        self.assertDictEqual(output, expected)
 
 
 if __name__ == "__main__":
