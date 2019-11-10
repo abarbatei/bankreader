@@ -12,7 +12,7 @@ with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setuptools.setup(
     name="bankreader",
-    version="0.2.2",
+    version="0.2.3",
     author="Alin BARBATEI",
     description="Romanian banks statement parser",
     long_description=long_description,
